@@ -1,0 +1,167 @@
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<style type="text/css">
+	
+	body{
+		background-color: #D3DCE5;
+	}
+
+	.main{
+		width: 1250px;
+		/*border-color: #04d5ef;*/
+		background-color: #D3DCE5;
+		/*border: 1px solid grey;
+		border-color: #04d5ef;*/
+		margin: 25px;
+		
+
+	}
+	
+	.container{
+		width: 745px;
+		font-size: 100%;
+		
+		line-height: 200%;
+		vertical-align: top;
+		display: inline-block;
+		padding: 10px;
+		background-color: white;
+		border: 1px solid grey;
+		border-color: #04d5ef;
+		border-color: #04d5ef;
+		border-radius: 5px;
+	}
+		
+	.container-fluid{
+		background-color: #23527c;
+	}
+
+	.navbar-default{
+		margin-bottom: 0px;
+	}
+
+	.navbar-brand{
+		background-color: #23527c;
+		color: #ffffff;
+		font-size: 150%;
+		text-align: center;
+		margin-left: 400px;
+	}
+
+
+	.container h3{
+		color: #23527c;
+	}
+
+	.map{
+		width: 202px;
+		height: 280px;
+		vertical-align: top;
+		display: inline-block;
+		margin-top: 0px;
+
+		
+
+	}
+
+	
+
+</style>
+
+
+
+
+
+<div class = "navbar-inner">
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/events">Tech Events</a>
+    </div>
+
+</nav>
+</div>
+<!-- end of bootstrap header -->
+
+<div class="main">
+
+<div class="container">
+<h3><%= @show["group"] ["name"] %></h3>
+<p>Location:
+	<% if @show["venue"] %>
+					<%= @show["venue"]["name"] %>, <%= @show["venue"]["address_1"] %>, <%= @show["venue"]["city"] %>, <%= @show["venue"]["state"] %>, <%= @show["venue"]["country"] %>
+				<% end %>
+
+</p>
+<p>Date and time: <%= @show['datetime']%></p>
+
+<p>People going: <%= @show['yes_rsvp_count']%></p>
+<br>
+<p>Event Description: </p>
+<p><%= sanitize @show["description"] %></p>
+<p>Event link: <a href="<%= @show["event_url"] %>" target="_blank"><%= @show["event_url"] %></a></p>
+
+
+
+</div>
+
+<!-- javascript code for google maps api -->
+
+
+
+<div class ="map" id="googleMap" style="width:500px;height:380px;"></div>
+
+<!-- end of maps -->
+
+
+
+</div>
+<script
+src="http://maps.googleapis.com/maps/api/js">
+</script>
+<% if @show["venue"] %>
+<script>
+
+
+var myCenter=new google.maps.LatLng(<%= @show["venue"]["lat"]%>,<%=@show["venue"]["lon"]%>);
+
+function initialize(myCenter)
+{
+	var mapProp = {
+	  center:myCenter,
+	  zoom:15,
+	  mapTypeId:google.maps.MapTypeId.ROADMAP
+	  };
+
+	var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+	var marker=new google.maps.Marker({
+	  position:myCenter,
+	  });
+
+	marker.setMap(map);
+}
+
+
+initialize(myCenter);
+
+
+
+
+</script>
+
+<% end %>
